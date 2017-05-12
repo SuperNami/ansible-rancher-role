@@ -1,0 +1,12 @@
+---
+# https://hub.docker.com/r/rancher/agent/tags/
+rancher_agent_version: latest
+
+# https://hub.docker.com/r/rancher/server/tags/
+rancher_server_version: latest
+
+# https://github.com/rancher/cli/releases
+rancher_cli_version: v0.4.0
+
+# https://github.com/rancher/rancher-compose/releases
+rancher_compose_version: v0.12.0

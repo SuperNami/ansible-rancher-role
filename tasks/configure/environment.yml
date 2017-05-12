@@ -1,0 +1,3 @@
+---
+- name: create swarm environment
+  command: rancher env create -o swarm swarm-env

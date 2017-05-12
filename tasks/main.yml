@@ -1,0 +1,19 @@
+---
+- include: deploy/rancher-server.yml
+  tags: deploy_rancher_server
+
+
+- include: deploy/rancher-host.yml
+  tags: deploy_rancher_host
+
+
+- include: install/rancher-cli.yml
+  tags: install_rancher_cli
+
+
+- include: configure/configure-cli.yml
+  tags: configure_rancher_cli
+
+
+- include: install/rancher-compose.yml
+  tags: install_rancher_compose

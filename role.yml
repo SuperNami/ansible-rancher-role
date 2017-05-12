@@ -1,0 +1,13 @@
+---
+- name: rancher
+  hosts: all
+  user: root
+  become: true
+  roles:
+  - rancher
+  vars_files:
+  - vars/local.yml
+  - vars/location.yml
+  - vars/versions.yml
+  - vars/secrets.yml
+  - vars/vault.yml

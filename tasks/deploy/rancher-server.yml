@@ -1,0 +1,23 @@
+---
+#- name: run nginx container for ssl
+#  docker_container:
+#    name: nginx
+#    image: nginx:latest
+#    restart_policy: always
+#    state: started
+#    ports:
+#    - "0.0.0.0:80:80"
+
+
+- name: run rancher server
+  docker_container:
+    name: rancher-server
+    image: rancher/server:{{ rancher_server_version }}
+    restart_policy: always
+    state: started
+    ports:
+    - "0.0.0.0:8080:8080"
+
+
+- name: wait for the rancher server to start
+  wait_for: timeout=120

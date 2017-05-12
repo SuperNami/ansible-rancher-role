@@ -1,0 +1,23 @@
+---
+- name: download rancher compose archive
+  get_url: url=https://github.com/rancher/rancher-compose/releases/download/{{ rancher_compose_version }}/rancher-compose-linux-amd64-{{ rancher_compose_version }}.tar.gz
+           dest=/opt/rancher-compose-linux-amd64-{{ rancher_compose_version }}.tar.gz
+           force=no
+
+
+- name: unpack rancher compose archive
+  command: tar -xvzf rancher-compose-linux-amd64-{{ rancher_compose_version }}.tar.gz chdir=/opt creates=/home/{{ user }}/rancher-compose-{{ rancher_compose_version }}
+
+
+- name: move rancher compose binary
+  command: mv rancher-compose /usr/bin/rancher-compose chdir=/opt/rancher-compose-{{ rancher_compose_version }} creates=/usr/bin/rancher-compose
+
+
+- name: remove rancher compose folder
+  file: path=/opt/rancher-compose-{{ rancher_compose_version }}
+        state=absent
+
+
+- name: remove rancher compose archive
+  file: path=/opt/rancher-compose-linux-amd64-{{ rancher_compose_version }}.tar.gz
+        state=absent

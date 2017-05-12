@@ -1,0 +1,14 @@
+---
+- name: create rancher user home directory
+  file: path=/home/{{ user }}/.rancher
+        state=directory
+        mode=0755
+
+
+- name: copy rancher cli configuration
+  template: src=templates/cli.json.j2
+            dest=/home/user/.rancher/cli.json
+
+
+#- name: generate rancher cli configuration
+#  command: rancher --access-key={{ rancher_access_key }} --secret-key={{ rancher_secret_key }} --url={{ rancher_server_url }} --environment={{ rancher_environment }}

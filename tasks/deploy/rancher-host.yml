@@ -1,0 +1,46 @@
+---
+- name: install httplib2
+  apt: name=python-httplib2
+       update_cache=yes
+
+
+- name: get the default project id
+  uri: method=GET
+       status_code=200
+       url="http://{{ rancher_server }}:{{ rancher_port }}/v1/projects" return_content=yes
+  register: project_id
+
+
+- name: return the registration token url of rancher server
+  uri: method=POST
+       status_code=201
+       url="http://{{ rancher_server }}:{{ rancher_port }}/v1/registrationtokens?projectId={{ project_id.json['data'][0]['id'] }}" return_content=yes
+  register: rancher_token_url
+
+
+- name: return the registration url of rancher server
+  uri: method=GET
+       url={{ rancher_token_url.json['links']['self'] }} return_content=yes
+  register: rancher_token
+
+
+- name: check if the rancher agent is running
+  command: docker ps -a
+  register: containers
+
+
+- name: register the host machine with the rancher server
+  docker:
+      image: rancher/agent:{{ rancher_agent_version }}
+      command: "{{ rancher_token.json['registrationUrl'] }}"
+      volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/rancher:/var/lib/rancher"
+      privileged: yes
+      detach: true
+      state: started
+  when: "{{ 'rancher-agent' not in containers.stdout }}"
+
+
+- name: wait for the rancher agent to start
+  wait_for: timeout=60
